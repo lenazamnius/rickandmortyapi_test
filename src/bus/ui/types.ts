@@ -1,0 +1,4 @@
+export enum Types {
+  START_FETCHING = '@UI/START_FETCHING',
+  STOP_FETCHING = '@UI/STOP_FETCHING',
+}
