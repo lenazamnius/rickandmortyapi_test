@@ -1,14 +1,21 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import './App.css';
+import { characterListActions } from './redux/characterList/actions';
+import RootRouter from './routes/RootRouter';
+
+export const API_URL = 'https://rickandmortyapi.com/api/character';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(characterListActions.getCharacters(API_URL));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <div>Learn React</div>
-      </header>
+      <RootRouter />
     </div>
   );
 }

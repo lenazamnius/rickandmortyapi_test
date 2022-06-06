@@ -1,0 +1,1 @@
+export { getCharacterList } from './getCharacterList';
