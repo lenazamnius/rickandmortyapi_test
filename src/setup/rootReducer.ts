@@ -12,4 +12,5 @@ const createRootReducer = (history: History) =>
     characterList: characterListReducer,
     character: characterReducer,
   });
+
 export default createRootReducer;

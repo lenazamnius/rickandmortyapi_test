@@ -1,14 +1,9 @@
-import Battery0BarIcon from '@mui/icons-material/Battery0Bar';
-import BatteryFullIcon from '@mui/icons-material/BatteryFull';
-import BatteryUnknownIcon from '@mui/icons-material/BatteryUnknown';
 import { Grid, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { UIEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import { characterListActions } from '../../redux/characterList/actions';
 import {
@@ -16,17 +11,18 @@ import {
   getNextLink,
 } from '../../redux/characterList/selectors';
 import { getIsFetching } from '../../redux/ui/selectors';
-import { MainRoutes } from '../../routes/books';
+import CharacterListItem from './components/CharacterListItem';
+import SearchAutocomplete from './components/SearchAutocomplete';
 
 const CharacterList = () => {
-  const characters = useSelector(getCharacters);
-  const nextLink = useSelector(getNextLink);
-  const isFetching = useSelector(getIsFetching);
   const dispatch = useDispatch();
+  const nextLink = useSelector(getNextLink);
+  const characters = useSelector(getCharacters);
+  const isFetching = useSelector(getIsFetching);
 
   const loadMoreItems = (event: UIEvent<HTMLUListElement>) => {
     if (
-      event.currentTarget.scrollTop + 650 ===
+      event.currentTarget.scrollTop + event.currentTarget.clientHeight ===
       event.currentTarget.scrollHeight
     ) {
       nextLink && dispatch(characterListActions.getCharacters(nextLink));
@@ -45,34 +41,23 @@ const CharacterList = () => {
       <Typography variant="h3" gutterBottom component="div">
         Movie character list
       </Typography>
+      <SearchAutocomplete />
       <List
         style={{
           width: '100%',
-          height: 650,
+          height: '65vh',
           overflowY: 'scroll',
           padding: 0,
         }}
         onScroll={loadMoreItems}>
-        {characters.map((item) => {
-          return (
-            <ListItem
-              key={item.id}
-              component={NavLink}
-              to={`${MainRoutes.characters}/${item.id}`}
-              style={{ height: '72px' }}>
-              <ListItemIcon>
-                {item.status === 'Alive' ? (
-                  <BatteryFullIcon fontSize="large" />
-                ) : item.status === 'Dead' ? (
-                  <Battery0BarIcon fontSize="large" />
-                ) : (
-                  <BatteryUnknownIcon fontSize="large" />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={item.name} secondary={item.status} />
-            </ListItem>
-          );
-        })}
+        {characters.map((item) => (
+          <CharacterListItem
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            status={item.status}
+          />
+        ))}
         {!nextLink && (
           <ListItem>
             <ListItemText primary="No more characters..." />

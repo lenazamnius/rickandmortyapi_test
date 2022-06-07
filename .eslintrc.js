@@ -23,7 +23,7 @@ module.exports = {
     JSX: true,
   },
   rules: {
-    'react/react-in-jsx-scope': 'warn',
+    'react/react-in-jsx-scope': 'off',
     'no-unused-vars': 'warn',
     'prettier/prettier': [
       'error',

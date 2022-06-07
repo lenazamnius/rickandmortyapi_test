@@ -6,11 +6,8 @@ import createSagaMiddleware from 'redux-saga';
 import createRootReducer from './rootReducer';
 import { rootSaga } from './rootSaga';
 
-export const history = createBrowserHistory();
-
-const { NODE_ENV } = process.env;
-
 const sagaMiddleware = createSagaMiddleware();
+export const history = createBrowserHistory();
 
 export default function configureStore(preloadedState: PreloadedState<any>) {
   const reducer = createRootReducer(history);
@@ -22,15 +19,6 @@ export default function configureStore(preloadedState: PreloadedState<any>) {
     ),
   );
   sagaMiddleware.run(rootSaga);
-  if (NODE_ENV !== 'production') {
-    // @ts-ignore
-    if (module.hot) {
-      // @ts-ignore
-      module.hot.accept<() => void>(() => {
-        store.replaceReducer(reducer);
-      });
-    }
-  }
 
   return store;
 }
